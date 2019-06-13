@@ -6,13 +6,14 @@ import Count from './Count';
 class Header extends Component {
 
 	render() {
-		let reset = this.props.reset;
+		let resetAll = this.props.resetAll;
 		let first = this.props.first;
 		let second= this.props.second;
+		let draw = this.props.draw;
 		return (
 			<div className={'header'}>
-            <Count first = {first} second = {second} />
-            <Button onClick={reset} className="reset">
+            <Count first = {first} second = {second} draw = {draw} />
+            <Button onClick={resetAll} className="reset">
               Reset All
             </Button>
 			</div>

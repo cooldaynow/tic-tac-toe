@@ -8,7 +8,7 @@ class LoadScreen extends Component {
     return (
         <div className="load__screen">
           <p>Player 1 : Would you like X or O?</p>
-          <Button
+         <div className = 'load__wrap__buttons'> <Button
             onClick={() =>
 							this.props.choice('o', false)
             }
@@ -24,6 +24,7 @@ class LoadScreen extends Component {
 					>
             X
           </Button>
+				</div>
         </div>
     );
   }

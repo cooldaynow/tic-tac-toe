@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Button} from 'reactstrap';
 import '../Win/index.scss';
 
 class WinScreen extends Component {

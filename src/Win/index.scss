@@ -1,9 +1,11 @@
 .win__screen {
 	display:flex;
 	justify-content:center;
+	align-items:center;
 	text-align:center;
 	width:360px;
 	height:360px;
 	color:white;
 	font-size:28px;
+	background-color: rgba(0, 0, 0, 0.6) ;
 }

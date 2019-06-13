@@ -1,7 +1,10 @@
 body {
-
   font-family: 'Architects Daughter', cursive;
 	font-size:18px;
+}
+button {
+
+  font-family: 'Architects Daughter', cursive;
 }
 #main {
   display: flex;
@@ -20,7 +23,7 @@ body {
   font-size: 6.5rem;
   outline: none;
   color: white;
-  font-family: 'Architects Daughter', cursive;
+	cursor:pointer;
 }
 .disabled {
   color: darkgrey !important;
@@ -30,7 +33,7 @@ body {
   display: flex;
   width: 360px;
   flex-flow: row wrap;
-  background: radial-gradient(#006400, black);
+  background: radial-gradient(green, black);
 }
 .container {
   display: flex;
@@ -47,22 +50,3 @@ body {
   background: rgba(240, 180, 135, 1);
 }
 
-.reset {
-	padding:0;
-  width: 100px;
-  border-radius: 50px;
-  font-size: 19px;
-  border-style: none;
-  outline: none;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  font-family: 'Shadows Into Light', cursive;
-  &:hover {
-    border: 3px dashed #8b4513;
-    cursor: pointer;
-  }
-}
-
-img {
-  width: 100%;
-}

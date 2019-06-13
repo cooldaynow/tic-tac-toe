@@ -1,17 +1,9 @@
 import React, {Component} from 'react';
 import './index.scss';
 import {Button} from 'reactstrap';
-import Xpic from '../delete.png';
 import WinScreen from '../Win';
 import LoadScreen from '../Load';
 import Header from '../Header';
-const X = () => {
-  return (
-    <div className="img">
-      <img src={Xpic} alt="X" />
-    </div>
-  );
-};
 
 class Main extends Component {
   state = {
@@ -106,28 +98,45 @@ class Main extends Component {
         count: {first: first, second: second, draw: draw},
       };
     });
-    this.reloadAfterWin();
+    this.reloadAfterWin(this.reload);
   };
 
-  reloadAfterWin = () => {
-    let reload = this.state.active;
+  reloadAfterWin = callback => {
+    let gameEnd = this.state.active;
+    if (gameEnd) {
+      setTimeout(() => {
+        this.setState({delay: true});
+        callback.call();
+      }, 800);
+    }
+  };
+  reload = () => {
     setTimeout(() => {
-      if (reload) {
-        this.reset();
-      }
-    }, 3000);
+      this.reset();
+    }, 1200);
   };
   reset = () => {
     let condition;
     let player1 = this.state.player1;
 
-    player1 == 'x' ? (condition = true) : (condition = false);
+    player1 === 'x' ? (condition = true) : (condition = false);
     this.setState({
-      ticTac: '',
       values: [],
       active: false,
+      delay: false,
       winner: '',
       condition: condition,
+    });
+  };
+  resetAll = () => {
+    this.setState({
+      condition: false,
+      delay: false,
+      values: [],
+      active: false,
+      start: '',
+      player1: '',
+      count: {first: 0, second: 0, draw: 0},
     });
   };
   renderButtons = () => {
@@ -159,15 +168,20 @@ class Main extends Component {
   render() {
     let winner = this.state.winner;
     let player1 = this.state.player1;
-		let first = this.state.count.first;
-		let second = this.state.count.second;
-		let draw = this.state.count.draw;
+    let first = this.state.count.first;
+    let second = this.state.count.second;
+    let draw = this.state.count.draw;
     return (
       <div id="main">
         <div className="container">
-          <Header reset = {this.reset} first = {first} second = {second} />
+          <Header
+            resetAll={this.resetAll}
+            first={first}
+            second={second}
+            draw={draw}
+          />
           <div className="wrap">
-            {this.state.active ? (
+            {this.state.delay ? (
               <WinScreen winner={winner} player1={player1} />
             ) : this.state.start ? (
               this.renderButtons()
