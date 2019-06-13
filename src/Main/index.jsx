@@ -77,11 +77,7 @@ class Main extends Component {
     let second = this.state.count.second;
     let draw = this.state.count.draw;
 
-    if (drawBoard === 9) {
-      active = true;
-      winner = 'draw';
-      draw++;
-    } else if (this.checkWin(board, 'x')) {
+      if (this.checkWin(board, 'x')) {
       active = true;
       winner = 'x';
       player1 === winner ? first++ : second++;
@@ -89,6 +85,10 @@ class Main extends Component {
       active = true;
       winner = 'o';
       player1 === winner ? first++ : second++;
+    }else if (drawBoard === 9) {
+      active = true;
+      winner = 'draw';
+      draw++;
     }
 
     await this.setState(prevState => {
