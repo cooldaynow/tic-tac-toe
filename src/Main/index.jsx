@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import './index.scss';
 import {Button} from 'reactstrap';
 import Xpic from '../delete.png';
-
+import WinScreen from '../Win';
+import LoadScreen from '../Load';
+import Header from '../Header';
 const X = () => {
   return (
     <div className="img">
@@ -17,12 +19,14 @@ class Main extends Component {
     condition: false,
     values: [],
     active: false,
+    start: '',
+    player1: '',
+    count: {first: 0, second: 0, draw: 0},
   };
 
   handleButtons = async ev => {
     let values = [...this.state.values];
     let id = ev.target.id;
-    let condition;
     let ticTac;
 
     if (ev.target.innerHTML !== '') {
@@ -30,17 +34,15 @@ class Main extends Component {
     }
     if (this.state.condition) {
       ticTac = 'x';
-      condition = false;
     } else {
       ticTac = 'o';
-      condition = true;
     }
 
     values[id] = ticTac;
     await this.setState(prevState => ({
       values: values,
       ticTac: ticTac,
-      condition: condition,
+      condition: !this.state.condition,
     }));
 
     this.result();
@@ -72,22 +74,60 @@ class Main extends Component {
     }
   };
 
-  result = () => {
+  result = async () => {
     let board = this.state.values;
-    if (this.checkWin(board, 'x')) {
-      console.log('Winner player: X');
-      this.setState({active: true});
+    let drawBoard = board.filter(elem => elem !== null && elem !== undefined)
+      .length;
+    let active;
+    let winner;
+    let player1 = this.state.player1;
+    let first = this.state.count.first;
+    let second = this.state.count.second;
+    let draw = this.state.count.draw;
+
+    if (drawBoard === 9) {
+      active = true;
+      winner = 'draw';
+      draw++;
+    } else if (this.checkWin(board, 'x')) {
+      active = true;
+      winner = 'x';
+      player1 === winner ? first++ : second++;
     } else if (this.checkWin(board, 'o')) {
-      this.setState({active: true});
-      console.log('Winner player: O');
+      active = true;
+      winner = 'o';
+      player1 === winner ? first++ : second++;
     }
+
+    await this.setState(prevState => {
+      return {
+        active: active,
+        winner: winner,
+        count: {first: first, second: second, draw: draw},
+      };
+    });
+    this.reloadAfterWin();
+  };
+
+  reloadAfterWin = () => {
+    let reload = this.state.active;
+    setTimeout(() => {
+      if (reload) {
+        this.reset();
+      }
+    }, 3000);
   };
   reset = () => {
+    let condition;
+    let player1 = this.state.player1;
+
+    player1 == 'x' ? (condition = true) : (condition = false);
     this.setState({
       ticTac: '',
-      condition: false,
       values: [],
       active: false,
+      winner: '',
+      condition: condition,
     });
   };
   renderButtons = () => {
@@ -102,25 +142,39 @@ class Main extends Component {
           id={i}
           className={'buttons'}
           onClick={ev => this.handleButtons(ev)}>
-          {this.state.values[i] === 'x' ? (
-            <X />
-          ) : this.state.values[i] === 'o' ? (
-            'НУЛЬ'
-          ) : null}
+          {this.state.values[i] === 'x'
+            ? 'X'
+            : this.state.values[i] === 'o'
+            ? 'O'
+            : null}
         </Button>,
       );
       i++;
     }
     return arr;
   };
+  choice = (choice, condition) => {
+    this.setState({start: true, player1: choice, condition: condition});
+  };
   render() {
+    let winner = this.state.winner;
+    let player1 = this.state.player1;
+		let first = this.state.count.first;
+		let second = this.state.count.second;
+		let draw = this.state.count.draw;
     return (
       <div id="main">
         <div className="container">
-          <div className="button__reset">
-            <Button onClick={this.reset} className = 'reset'>Reset All</Button>
+          <Header reset = {this.reset} first = {first} second = {second} />
+          <div className="wrap">
+            {this.state.active ? (
+              <WinScreen winner={winner} player1={player1} />
+            ) : this.state.start ? (
+              this.renderButtons()
+            ) : (
+              <LoadScreen choice={this.choice} />
+            )}
           </div>
-          <div className="wrap"> {this.renderButtons()}</div>
         </div>
       </div>
     );

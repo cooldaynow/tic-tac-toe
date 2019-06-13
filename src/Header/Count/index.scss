@@ -1,0 +1,20 @@
+.wrap__count {
+	display:flex;
+	width:240px;
+	justify-content:space-around;
+	position:relative;
+	&:after {
+		content:'';
+		border-right:3px solid #8b4513 ;
+		position:absolute;
+		top:10px;
+		right:118px;
+		height:30px;
+
+	}
+}
+.count {
+	display:flex;
+	flex-direction:column;
+	text-align:center;
+}

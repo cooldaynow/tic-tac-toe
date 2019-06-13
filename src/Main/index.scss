@@ -1,6 +1,7 @@
 body {
-  button {
-  }
+
+  font-family: 'Architects Daughter', cursive;
+	font-size:18px;
 }
 #main {
   display: flex;
@@ -10,16 +11,21 @@ body {
   background-color: #fff8dc;
 }
 .buttons {
+	padding:0;
   width: 120px;
   height: 120px;
   background-color: transparent;
   background-repeat: no-repeat;
   border: 1px solid darkgrey;
-	color:white ;
+  font-size: 6.5rem;
+  outline: none;
+  color: white;
+  font-family: 'Architects Daughter', cursive;
 }
 .disabled {
-	color:darkgrey !important;
+  color: darkgrey !important;
 }
+
 .wrap {
   display: flex;
   width: 360px;
@@ -40,14 +46,9 @@ body {
   height: 450px;
   background: rgba(240, 180, 135, 1);
 }
-.button__reset {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  height: 50px;
-}
+
 .reset {
-  margin: 0px 30px 10px 0;
+	padding:0;
   width: 100px;
   border-radius: 50px;
   font-size: 19px;
@@ -58,7 +59,7 @@ body {
   font-family: 'Shadows Into Light', cursive;
   &:hover {
     border: 3px dashed #8b4513;
-		cursor:pointer;
+    cursor: pointer;
   }
 }
 
