@@ -1,12 +1,13 @@
-.navbar {
+.top {
 	display:flex;
 	align-items:center;
+	justify-content:center;
+	flex-direction:column;
 	text-align:center;
-	height:100px;
+	height:100vh;
 	width:100%;
 	background:#282828 ;
-	top:0;
-	position:fixed;
+	z-index:1;
 	a {
 		padding:20px;
 		color:white;

@@ -11,13 +11,14 @@
   border-radius: 50px;
   font-size: 19px;
   border-style: none;
+	box-shadow:none!important;
   outline: none;
-  background-color: transparent;
+  background-color: transparent!important;
   background-repeat: no-repeat;
 	transition:all .2s linear;
-  //font-family: 'Shadows Into Light', cursive;
   &:hover {
     border: 3px dashed #8b4513;
     cursor: pointer;
+		background:none;
   }
 }

@@ -6,7 +6,8 @@ import LoadScreen from '../Load';
 import Header from '../Header';
 import Turn from '../Turn';
 import Top from '../Navbar';
-class Main extends Component {
+
+class TicTacToe extends Component {
   state = {
     ticTac: '',
     turn: '',
@@ -205,10 +206,11 @@ class Main extends Component {
     let draw = this.state.count.draw;
     let turn = this.state.turn;
     return (
-      <div id="main">
+      <div id="tic__tac">
+				<div className = 'top'>
 				<Top />
         <Turn turn={turn} player1={player1} player2={player2} />
-        <div className="container">
+        <div className="tic__tac__container">
           <Header
             resetAll={this.resetAll}
             first={first}
@@ -224,10 +226,11 @@ class Main extends Component {
               <LoadScreen choice={this.choice} />
             )}
           </div>
+					</div>
         </div>
       </div>
     );
   }
 }
 
-export default Main;
+export default TicTacToe;

@@ -1,7 +1,4 @@
-body {
-  font-family: 'Architects Daughter', cursive;
-  font-size: 18px;
-}
+
 button {
   font-family: 'Architects Daughter', cursive;
 }
@@ -9,7 +6,9 @@ button {
   background: #ff8000 !important;
   color: #00bfff !important;
 }
-#main {
+#tic__tac{
+	font-family: 'Architects Daughter', cursive !important;
+  font-size: 18px !important;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -24,23 +23,26 @@ button {
   height: 120px;
   background-color: transparent;
   background-repeat: no-repeat;
-  border: 1px solid darkgrey;
+  border: 1px solid darkgrey!important;
+	box-shadow:none!important;
   font-size: 6.5rem;
-  outline: none;
+  outline: none!important;
   color: white;
   cursor: pointer;
+	z-index:3;
 }
 .disabled {
-  color: darkgrey;
+	color: darkgrey;
+	opacity:.65;
 }
-
 .screen {
   display: flex;
   width: 360px;
   flex-flow: row wrap;
   background: radial-gradient(rgba(40, 40, 40, 1), black);
+	z-index:3;
 }
-.container {
+.tic__tac__container {
   display: flex;
   flex-direction: column;
   justify-content: center;
