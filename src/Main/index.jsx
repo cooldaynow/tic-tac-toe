@@ -4,15 +4,18 @@ import {Button} from 'reactstrap';
 import WinScreen from '../Win';
 import LoadScreen from '../Load';
 import Header from '../Header';
-
+import Turn from '../Turn';
 class Main extends Component {
   state = {
     ticTac: '',
+    turn: '',
     condition: false,
     values: [],
     active: false,
     start: '',
     player1: '',
+    player2: '',
+    winButtons: [],
     count: {first: 0, second: 0, draw: 0},
   };
 
@@ -34,6 +37,7 @@ class Main extends Component {
     await this.setState(prevState => ({
       values: values,
       ticTac: ticTac,
+      turn: !this.state.turn,
       condition: !this.state.condition,
     }));
 
@@ -41,53 +45,62 @@ class Main extends Component {
   };
 
   checkWin = (board, player) => {
-    let a = board[0];
-    let b = board[1];
-    let c = board[2];
-    let d = board[3];
-    let e = board[4];
-    let f = board[5];
-    let g = board[6];
-    let h = board[7];
-    let i = board[8];
-    if (
-      (a === player && b === player && c === player) ||
-      (d === player && e === player && f === player) ||
-      (g === player && h === player && i === player) ||
-      (a === player && d === player && g === player) ||
-      (b === player && e === player && h === player) ||
-      (c === player && f === player && i === player) ||
-      (a === player && e === player && i === player) ||
-      (c === player && e === player && g === player)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    let winCombos = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    let winningCombo = [];
+    let result = winCombos.some(combination => {
+      let winning = true;
+      for (let i = 0, len = combination.length; i < len; i++) {
+        let elem = combination[i];
+        if (board[elem] !== player) {
+          winning = false;
+        }
+      }
+      if (winning) {
+        winningCombo = combination;
+      }
+      return winning;
+    });
+    return [result, winningCombo];
   };
 
   result = async () => {
     let board = this.state.values;
     let drawBoard = board.filter(elem => elem !== null && elem !== undefined)
       .length;
-    let active;
-    let winner;
+    let active, winner, winButtons;
+    let turn = this.state.turn;
     let player1 = this.state.player1;
     let first = this.state.count.first;
     let second = this.state.count.second;
     let draw = this.state.count.draw;
 
-      if (this.checkWin(board, 'x')) {
+    if (this.checkWin(board, 'x')[0]) {
+      winButtons = this.checkWin(board, 'x')[1];
       active = true;
       winner = 'x';
+      turn = '';
       player1 === winner ? first++ : second++;
-    } else if (this.checkWin(board, 'o')) {
+    } else if (this.checkWin(board, 'o')[0]) {
+      winButtons = this.checkWin(board, 'o')[1];
       active = true;
       winner = 'o';
+      turn = '';
       player1 === winner ? first++ : second++;
-    }else if (drawBoard === 9) {
+    } else if (drawBoard === 9) {
+			winButtons = [];
       active = true;
       winner = 'draw';
+      turn = '';
       draw++;
     }
 
@@ -95,6 +108,8 @@ class Main extends Component {
       return {
         active: active,
         winner: winner,
+        turn: turn,
+        winButtons: winButtons,
         count: {first: first, second: second, draw: draw},
       };
     });
@@ -105,7 +120,7 @@ class Main extends Component {
     let gameEnd = this.state.active;
     if (gameEnd) {
       setTimeout(() => {
-        this.setState({delay: true});
+        this.setState({delay: true, turn: ''});
         callback.call();
       }, 800);
     }
@@ -124,6 +139,7 @@ class Main extends Component {
       values: [],
       active: false,
       delay: false,
+      turn: true,
       winner: '',
       condition: condition,
     });
@@ -131,6 +147,7 @@ class Main extends Component {
   resetAll = () => {
     this.setState({
       condition: false,
+      turn: '',
       delay: false,
       values: [],
       active: false,
@@ -147,9 +164,13 @@ class Main extends Component {
       arr.push(
         <Button
           disabled={this.state.active}
-          key={i + Math.random() * 999}
+          key={i}
           id={i}
-          className={'buttons'}
+          className={
+            this.state.active && this.state.winButtons.includes(i)
+              ? 'buttons win'
+              : 'buttons'
+          }
           onClick={ev => this.handleButtons(ev)}>
           {this.state.values[i] === 'x'
             ? 'X'
@@ -163,16 +184,28 @@ class Main extends Component {
     return arr;
   };
   choice = (choice, condition) => {
-    this.setState({start: true, player1: choice, condition: condition});
+    let player2;
+    choice === 'x' ? (player2 = 'o') : (player2 = 'x');
+
+    this.setState({
+      start: true,
+      turn: true,
+      player1: choice,
+      player2: player2,
+      condition: condition,
+    });
   };
   render() {
     let winner = this.state.winner;
     let player1 = this.state.player1;
+    let player2 = this.state.player2;
     let first = this.state.count.first;
     let second = this.state.count.second;
     let draw = this.state.count.draw;
+    let turn = this.state.turn;
     return (
       <div id="main">
+        <Turn turn={turn} player1={player1} player2={player2} />
         <div className="container">
           <Header
             resetAll={this.resetAll}
@@ -180,7 +213,7 @@ class Main extends Component {
             second={second}
             draw={draw}
           />
-          <div className="wrap">
+          <div className="screen">
             {this.state.delay ? (
               <WinScreen winner={winner} player1={player1} />
             ) : this.state.start ? (

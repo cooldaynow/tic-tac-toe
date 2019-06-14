@@ -7,7 +7,7 @@ class Count extends Component {
 		let second = this.props.second;
 		let draw = this.props.draw;
     return (
-      <div className={'wrap__count'}>
+      <div className={'count__screen'}>
         <div className = 'count'> {first} <div>Player 1</div></div>
         <div className = 'count'> {second} <div>Player 2</div></div>
         <div className = 'count'> {draw} <div>Draw</div></div>
