@@ -5,6 +5,7 @@ import WinScreen from '../Win';
 import LoadScreen from '../Load';
 import Header from '../Header';
 import Turn from '../Turn';
+import Top from '../Navbar';
 class Main extends Component {
   state = {
     ticTac: '',
@@ -205,6 +206,7 @@ class Main extends Component {
     let turn = this.state.turn;
     return (
       <div id="main">
+				<Top />
         <Turn turn={turn} player1={player1} player2={player2} />
         <div className="container">
           <Header
